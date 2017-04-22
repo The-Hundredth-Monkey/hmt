@@ -12,16 +12,16 @@ function ConvertTo-HMTScript {
     }
 }
 
-functdion Convert-Stage2Script {
+function Convert-Stage2Script {
     param(
         [System.Collections.Specialized.OrderedDictionary] $stage
     )
     
-
+    
 }
 
 
 $yaml = gc $PSScriptRoot\hmt.yaml -Raw
 $yaml = ConvertFrom-Yaml $yaml -Ordered
-
-ConvertTo-HMTScript $yaml
+$yaml
+#ConvertTo-HMTScript $yaml

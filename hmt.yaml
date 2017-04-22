@@ -34,8 +34,21 @@ windows config:
   proxy:                                              # Update-Proxy -Server 10.35.9.55 -Enable 1
      server: 10.35.9.55:8080
      enable: 1      
-  rename computer: { name: mm-$(Get-Random)-w10 }     # Rename-Computer -Name mm-dell
-  
+  computer name: 
+      $$: |
+        $systeminfo = gwmi Win32_ComputerSystem
+        $manufacturer = $systeminfo.Manufacturer -split ' ' | select -first 1
+        $year = (get-date).ToString('yy')
+        $name = 'mm-{0}{1}-w10' -f $manufacturer.ToLower(), $year
+        if ($name.Lenght -gt 15) { $name.Substring(0,14) } else { $name }
+
+      $systeminfo:    gwmi Win32_ComputerSystem
+      $manufacturer:  $systeminfo.Manufacturer -split ' ' | select -first 1
+      $name:          mm-$manufacturer-w10
+      $name1:          if ($name.Lenght -gt 15) { $name.Substring(0,14) } else { $name }
+
+      params:         $name1    # or $$
+
 custom scripts:
   script: |
     if (Get-Random) {
