@@ -2,6 +2,8 @@
 
 ## Yaml parsing
 
+See to make it module so it can be used with other projects.
+
 ### Executioners
 
 - HMT yaml fields are posh aliases or powershel functions with :: syntax. There will be no guessing for now but it can come later based on verb priorities.
@@ -26,14 +28,29 @@ This would also allow for 3thd party aliases previously imported, i.e. `proxy:: 
 
 - Some cmdlets are unusable without Force. Autoforce where possible
 
+- Commands 
 
-### Sufixes
+### Special
 
-All with |
+#### Prefix $
+
+- `$` prefix anywhere executes Posh expression and saves result into name.
+- Could be suffix on commands: `time sync $: >'
+- `$name` creates var `$name`, but also `$ name`
+- `$ some description` will create var `$someDescription` which might or might not be used.
+   It could also be used only for `Write-Hosts`
+- `$` can be among commands or within commands 
+
+#### Sufixes
+
+All with | to allow for arbitrary inline params on commands ?
 
 - `=` - Each array item generates 1 call 
 - `@` - Wrap array into single argument
 - `f` - Autoforce
+- `s` - Use switch evaluation  (do not allow per argument? )
+- `p` - Use params by order (default, perhaps modifiable globally)
+
 
 ### Data
 

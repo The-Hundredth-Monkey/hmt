@@ -4,7 +4,9 @@ _:
 
 packages and tools:
   stage: restart 
+
   chocolatey: latest                                  # Use-Chocolatey -Latest
+ 
   packages:                                           # Use-Packages -Chocolatey @(..) -Gem @(...) 
     - chocolatey:
       - copyq
@@ -13,6 +15,7 @@ packages and tools:
     - gem:
       - gist
       - nanoc
+  
   git repositories:                                   # Use-GitRepositories -Repos @() -Root
     root: c:\work
     repos:
@@ -28,21 +31,28 @@ packages and tools:
 windows config:
   stage: restart
   
-  explorer options:
+  explorer options |s:
     - show hidden files
     - show protected OS files
     - show file extensions
     - show full path in title bar
-  
-  language list |@: [en-uk, sr-lat, sr-cyr]  #???? LanguageList is array param  
 
-  # languge: 
-  #   list: [en-uk, sr-lat, sr-cyr]
-  #   force: true 
+  language list |:
+    - [en-uk, sr-lat, sr-cyr]
+
+  culture: sr-Latn-RS
+  
+  time zone: Central Europe Standard Time
+  
+  time sync |$: >
+    W32tm.exe /register
+    Get-Service W32Time | Start-Service
+    w32tm.exe /config /manualpeerlist:"3.rs.pool.ntp.org 3.europe.pool.ntp.org" /syncfromflags:manual /update
+    w32tm.exe /resync
   
   proxy:
      server: 10.35.9.55:8080
-     enable: 1      
+     enable: 1     
   
   computer name: 
       $name: >
@@ -59,6 +69,7 @@ windows config:
 
 debloat windows:
    stage: always restart
-   script: |
+
+   debloat $: >
      cd c:\source\debloat-windows-10
      ls scripts\*.ps1 | { Write-Host $_; . $_ }
