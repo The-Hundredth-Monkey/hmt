@@ -37,14 +37,14 @@ windows config:
     - show file extensions
     - show full path in title bar
 
-  language list |:
+  language list |f:
     - [en-uk, sr-lat, sr-cyr]
 
   culture: sr-Latn-RS
   
   time zone: Central Europe Standard Time
   
-  time sync |$: >
+  time sync $: >
     W32tm.exe /register
     Get-Service W32Time | Start-Service
     w32tm.exe /config /manualpeerlist:"3.rs.pool.ntp.org 3.europe.pool.ntp.org" /syncfromflags:manual /update

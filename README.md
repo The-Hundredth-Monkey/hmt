@@ -34,7 +34,7 @@ This would also allow for 3thd party aliases previously imported, i.e. `proxy:: 
 
 #### Prefix $
 
-- `$` prefix anywhere executes Posh expression and saves result into name.
+- `$` prefix anywhere executes Posh expression and saves result into name. 
 - Could be suffix on commands: `time sync $: >'
 - `$name` creates var `$name`, but also `$ name`
 - `$ some description` will create var `$someDescription` which might or might not be used.
@@ -50,6 +50,7 @@ All with | to allow for arbitrary inline params on commands ?
 - `f` - Autoforce
 - `s` - Use switch evaluation  (do not allow per argument? )
 - `p` - Use params by order (default, perhaps modifiable globally)
+- `$` - express can be used without |
 
 
 ### Data

@@ -20,7 +20,7 @@ function Convert-Stage2Script {
     $options = $StageData.stage
     $runners = keys $StageData 'stage'
     foreach ( $r in $runners ) {
-        $rdef = Get-RunnerDefinition $r
+        $rdef, $opts = Get-RunnerDefinition $r
     }
 }
 
@@ -31,6 +31,13 @@ function Get-RunnerDefinition( $Name )
     #     $explicit = $true
     # } 
 
+    if (($Name -match '(?<=\|).+') -or ($Name -match '\$$')) {
+        $o = $Matches[0].Trim()
+
+        $Name = $Name -replace '\s*\|.+'
+    } else { $o = '' }
+
+    if ($o -eq '$') { $Name = 'iex'}
     $n = gcm $Name -ea 0
     if (!$n) { 
         $n = $Name.Replace(' ', '-')
@@ -38,8 +45,7 @@ function Get-RunnerDefinition( $Name )
         if (!$n) { throw "Can't find command: $Name" }
     }
     if ($n.CommandType -eq 'Alias') { $n = $n.Definition }
-    return $n
+    return $n,$o
 }
-
 
 function keys( $hash, $exclude ) { $hash.Keys | ? { $exclude -notcontains $_ } }
