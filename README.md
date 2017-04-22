@@ -24,6 +24,17 @@ This would also allow for 3thd party aliases previously imported, i.e. `proxy:: 
 
 - There can be arbitrary number of variables defined. See `windows config.computer name`
 
+- Some cmdlets are unusable without Force. Autoforce where possible
+
+
+### Sufixes
+
+All with |
+
+- `=` - Each array item generates 1 call 
+- `@` - Wrap array into single argument
+- `f` - Autoforce
+
 ### Data
 
 Define data storage for all executioners:
@@ -37,5 +48,6 @@ git repositories:   # Use-GitRepositories -Repos @() -Root
     root: c:\work
     repos:              # get from data\git repositories\repos  
                               # get from data\gitrepositories
+
 ```
         
