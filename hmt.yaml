@@ -1,0 +1,52 @@
+_:
+  verbs:   [use, set, update, '*']
+  modules: [HMT, Microsoft.PowerShell.*, MM_*, HM_*, Carbon.*] 
+
+packages and tools:
+  stage: restart 
+  chocolatey: latest                                  # Use-Chocolatey -Latest
+  packages:                                           # Use-Packages -Chocolatey @(..) -Gem @(...) 
+    - chocolatey:
+      - copyq
+      - everything --params '/Service'
+      - totalcommander --params /DefaultFM'
+    - gem:
+      - gist
+      - nanoc
+  git repositories:                                   # Use-GitRepositories -Repos @() -Root
+    root: c:\work
+    repos:
+     - majkinetor/posh
+     - majkinetor/profile_d
+     - whlmt/Debloat-Win-10
+
+windows update:     
+  stage: [restart. rerurn] 
+  windows update:                                     # Invoke-WindowsUpdate -Category critical
+    category: critical
+    
+windows config:
+  stage: restart
+  explorer options: [show hidden files, show system]  # Set-ExplorerOptions -ShowHiddenFiles -ShowSystem
+  ps remoting: force                                  # Enable-PSRemoting -Force
+  locale: {city: belgrade}                            # Set-Locale -City Belgrade
+  language settings: [en-uk, sr-lat, sr-cyr]          # Set-LanguageSettings @(...)
+  proxy:                                              # Update-Proxy -Server 10.35.9.55 -Enable 1
+     server: 10.35.9.55:8080
+     enable: 1      
+  rename computer: { name: mm-$(Get-Random)-w10 }     # Rename-Computer -Name mm-dell
+  
+custom scripts:
+  script: |
+    if (Get-Random) {
+       log 'meh'
+    }
+  pinned applications:                               # Set-PinnedApplication @(...)
+    - $Env:ProgramFiles\NPP\npp.exe
+    - $Env:ProgramFiles\Conemu\Conemu.exe
+
+debloat windows:
+   stage: always restart
+   script: |
+     cd c:\source\debloat-windows-10
+     ls scripts\*.ps1 | { Write-Host $_; . $_ }
