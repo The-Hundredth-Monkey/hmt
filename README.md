@@ -23,4 +23,19 @@ This would also allow for 3thd party aliases previously imported, i.e. `proxy:: 
 - Yaml `$` prefixed keys are evaluted as expressions (`iex`). For multiline scripts use | or >
 
 - There can be arbitrary number of variables defined. See `windows config.computer name`
+
+### Data
+
+Define data storage for all executioners:
+
+```yaml
+packages:   # Use-Packages -Chocolatey @(..) -Gem @(...) 
+    - chocolatey         #get from data\packages\chocolatey
+    - npm                   #get from data\packages\nmp
+
+git repositories:   # Use-GitRepositories -Repos @() -Root
+    root: c:\work
+    repos:              # get from data\git repositories\repos  
+                              # get from data\gitrepositories
+```
         
