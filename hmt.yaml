@@ -5,18 +5,20 @@ _:
 packages and tools:
   stage: restart 
 
-  chocolatey: latest                                  # Use-Chocolatey -Latest
+  chocolatey |s: 
+    - latest
+    - update packages
  
-  packages:                                           # Use-Packages -Chocolatey @(..) -Gem @(...) 
-    - chocolatey:
+  packages:
+    chocolatey:
       - copyq
       - everything --params '/Service'
       - totalcommander --params /DefaultFM'
-    - gem:
+    gem:
       - gist
       - nanoc
   
-  git repositories:                                   # Use-GitRepositories -Repos @() -Root
+  git repositories:                                 
     root: c:\work
     repos:
      - majkinetor/posh
@@ -25,7 +27,7 @@ packages and tools:
 
 # windows update:     
 #   stage: [restart. rerurn] 
-#   windows update:                                     # Invoke-WindowsUpdate -Category critical
+#   windows update:                                    
 #     category: critical
     
 windows config:
