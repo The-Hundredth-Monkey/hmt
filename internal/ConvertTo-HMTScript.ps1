@@ -8,7 +8,7 @@ function ConvertTo-HMTScript {
     $stages = keys $hmt '_'
     foreach( $stage in $stages) {
          $s = Convert-Stage2Script $stage $hmt.$stage
-         $script += "`n" + $s
+         $script += "stage '$stage' {`n" + $s + "}`n`n"
     }
 
     $script | Set-Content $PSScriptRoot\..\hmt-script.ps1

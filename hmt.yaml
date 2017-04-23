@@ -74,4 +74,4 @@ debloat windows:
 
    debloat $: |
      cd c:\source\debloat-windows-10
-     ls scripts\*.ps1 | { Write-Host $_; . $_ }
+     ls scripts\*.ps1 | % { Write-Host $_; . $_}
