@@ -31,7 +31,7 @@ In other words, if command contains yaml dictionary its keys will be mapped to P
 it will be mapped to the same command according to parameter ordering:
 
 ```powershell
-    Update-Proxy "myserver.com" 1 "meh.com
+    Update-Proxy "myserver.com" 1 "meh.com"
 ```
 
 There is one special key, `args` that can be used to mix named and unnamed parameters:
