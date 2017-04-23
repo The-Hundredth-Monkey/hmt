@@ -34,7 +34,7 @@ it will be mapped to the same command according to parameter ordering:
     Update-Proxy "myserver.com" 1 "meh.com"
 ```
 
-There is one special key, `args` that can be used to mix named and unnamed parameters:
+There is one special key - `args` - that can be used to mix named and non-named parameters:
 
 ```yaml
     computer name:
