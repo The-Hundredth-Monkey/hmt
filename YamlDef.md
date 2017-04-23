@@ -37,6 +37,13 @@ Example: set explorer options: Set-ExplorerOptions
         - a
         - b                   
 
+### Complex values
+
+<cmd>:
+    param1:               - -Param1:${p_param1} ; ${p_param1} = ConvertFrom-Yaml @"..."@
+        dict | array
+
+
 NOTES:
     - <key> can be multiword and whatever, hence ${ }
     - params should be applied with : because of switches
@@ -46,5 +53,49 @@ NOTES:
 ## Options
 
 
+### s (all switches)
+
+    command (s:               Command -Param1 -Param2  (spaces removed)
+        - param 1
+        - param 2
 
 
+### @ ( array up as arg)
+
+    command (@:               Command @("param 1", "param 2")
+        - param 1
+        - param 2
+
+## = (multiple)               
+
+array version:
+
+    command (=:               Command "Param 1"
+        - param 1             Command "Param 2"
+        - param 2
+
+array of dicts or arrays
+
+   command (=:              
+       -
+         - param 1             Command "Param 1" "Param 2"
+         - param 2
+       -                       Command "Param 3" "Param 4"
+         - param 3
+         - param 4
+ 
+   command (=:                  Command -Param1:"Val 1" -Param2:"Val 2"
+        - param1: val 1         Command -Param3:"Val 3" -Param4:"Val 4"
+          param2: val 2
+        - param3: val 3
+          param4: val 4
+
+## f (force)
+
+    command (f                  Command -Force ....
+
+
+--------------------------
+
+## r (recurse) 
+    command (r                  Command -Recurse ... 
