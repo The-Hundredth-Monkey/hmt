@@ -11,7 +11,7 @@ If no option is given command parameters are passed as a dictionary. If we have 
 ```powershell
     Update-Proxy -Server:'myserver.com -Enable:1 -Override:'meh.com'
 ```
-and given that alias proxy exists (`Set-Alias proxy Update-Proxy`) it can be represented in yaml file as
+and given that alias `proxy` exists (`Set-Alias proxy Update-Proxy`) it can be represented in yaml file as
 
 ```yaml
     proxy:
