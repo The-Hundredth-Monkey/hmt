@@ -70,7 +70,7 @@ function Get-RunnerParams($data, $opts) {
             $data.Keys | % { 
                 $prop = $_;  $val = $data.$prop
 
-                if ($_.StartsWith('$')) {
+                if ($_.StartsWith('$')) {   #TODO: Ovo ide u script neizmenjeno god damnit, zapravo sve sto moze
                     $var = titlecase $prop.Substring(1).Trim()
                     Set-Variable $var (Invoke-Expression $val)
                     return
