@@ -21,9 +21,9 @@ packages and tools:
   git repositories:                                 
     root: c:\work
     repos:
-     - majkinetor/posh
-     - majkinetor/profile_d
-     - whlmt/Debloat-Win-10
+      - majkinetor/posh
+      - majkinetor/profile_d
+      - whlmt/Debloat-Win-10
 
 # windows update:     
 #   stage: [restart. rerurn] 
