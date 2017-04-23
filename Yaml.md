@@ -93,7 +93,7 @@ windows config:                            # Starting stage "windows config"
      server: proxysrv.com
      enable: 1
   computer name: my-computer               # Rename-Computer "my-computer"
-  language list (@:                        # Parameter @ winds up array to first argumente so this is
+  language list (@:                        # Parameter @ winds up array to first argument so this is
     - en-us                                # Set-WinUserLanguageList 'enu-us','de'
     - de
   time zone: Central Europe Standard Time  # Set-TimeZone "Central Europe Standard Time"
