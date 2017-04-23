@@ -5,7 +5,7 @@ _:
 packages and tools:
   stage: restart 
 
-  chocolatey (s: 
+  chocolatey |s: 
     - latest
     - update packages
  
@@ -46,7 +46,7 @@ windows config:
   
   time zone: Central Europe Standard Time
   
-  time sync $: |
+  time sync $: >
     W32tm.exe /register
     Get-Service W32Time | Start-Service
     w32tm.exe /config /manualpeerlist:"3.rs.pool.ntp.org 3.europe.pool.ntp.org" /syncfromflags:manual /update

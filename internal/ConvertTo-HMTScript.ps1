@@ -27,7 +27,19 @@ function Convert-Stage2Script {
     $runners = keys $StageData 'stage'
     $script  = ''
     foreach ( $r in $runners ) {
-        $rdef, $opts = Get-RunnerDefinition $r
+        $rdef, $opts = Get-RunnerDefinition $r 
+        if ($opts -eq '$') {
+            $script += "Write-Host 'Stage runner: $(($r -replace '.$').Trim())'`n"
+            $script += $StageData.$r + "`n"
+            continue
+        } elseif ($opts -eq '=') {   #Todo get-runnerparams => Generate-RunnerCode
+            $StageData.$r | % {
+                $script += "{0} ""{1}""`n" -f $rdef, $_
+            }
+            $script += "`n"
+            continue
+        }
+
         $params, $pre = Get-RunnerParams $StageData.$r $opts
         if ($pre) {$script += $pre }
         $script += "{0} {1}`n`n" -f $rdef, $params 
@@ -52,13 +64,26 @@ function Get-RunnerParams($data, $opts) {
 
     if ($opts.Contains('s')) {
         $data | % { $res += ' -' + (titlecase $_).Replace(' ','') }
-    } else { 
+    } 
+    else { 
         if ($data -is [System.Collections.Specialized.OrderedDictionary]) {
             $data.Keys | % { 
-                $val = $data.$_
+                $prop = $_;  $val = $data.$prop
+
+                if ($_.StartsWith('$')) {
+                    $var = titlecase $prop.Substring(1).Trim()
+                    Set-Variable $var (Invoke-Expression $val)
+                    return
+                }
+                
+                if ($prop -eq 'args') { 
+                    $res += "'{0}'" -f (Expand-PoshString $val)
+                    return
+                }
+
                 if ($val -is [string]) { $val = Expand-PoshString $val }
                 elseif ( $val.GetType().BaseType.Name -ne 'ValueType' ) {
-                    $val, $p = to_yaml_param $_ $val
+                    $val, $p = to_yaml_param $prop $val
                     $pre += $p
                 }
 
@@ -66,6 +91,7 @@ function Get-RunnerParams($data, $opts) {
             } 
         }
         if ($data -is [string]) { $res = "'$data'" }
+        
         if ($data.GetType().Name -eq 'List`1') {
             for($i = 0; $i -lt $data.Count; $i++){
                 $val = $data[ $i ]
@@ -91,10 +117,10 @@ function Get-RunnerDefinition( $Name )
     #     $explicit = $true
     # } 
 
-    if (($Name -match '(?<=\|).+') -or ($Name -match '\$$')) {
+    if (($Name -match '(?<=\().+') -or ($Name -match '\$$')) {
         $o = $Matches[0].Trim()
 
-        $Name = $Name -replace '\s*\|.+'
+        $Name = $Name -replace '\s*\(.+'
     } else { $o = '' }
 
     if ($o -eq '$') { $Name = 'iex'}
