@@ -23,8 +23,9 @@ function Convert-Stage2Script {
 
     $options = $StageData.stage
 
-    $stage = "stage '$StageName' {"
+    $stage   = "stage '$StageName' {"
     $runners = keys $StageData 'stage'
+    $script  = ''
     foreach ( $r in $runners ) {
         $rdef, $opts = Get-RunnerDefinition $r
         $params, $pre = Get-RunnerParams $StageData.$r $opts
@@ -38,25 +39,44 @@ function titlecase($a) {
     (Get-Culture).TextInfo.ToTitleCase($a)
 }
 
+function to_yaml_param($name, $val) {
+    $pname = "`$p_${name}"
+    $pval  = "${pname} = ConvertFrom-Yaml @""`n" 
+    $pval += Expand-PoshString (ConvertTo-Yaml $val)
+    $pval += """@`n"
+    $pname, $pval
+}
+
 function Get-RunnerParams($data, $opts) {
-    $dict = $data -is [System.Collections.Specialized.OrderedDictionary]
+    $res = $pre = ''
+
     if ($opts.Contains('s')) {
-        $data | % { $res='' } { $res += ' -' + (titlecase $_).Replace(' ','') }
+        $data | % { $res += ' -' + (titlecase $_).Replace(' ','') }
     } else { 
-        if ($dict) {
-            $data.Keys | % { $res =''} { 
+        if ($data -is [System.Collections.Specialized.OrderedDictionary]) {
+            $data.Keys | % { 
                 $val = $data.$_
                 if ($val -is [string]) { $val = Expand-PoshString $val }
-                if ($val.GetType().BaseType -isnot [ System.ValueType ]) {
-                    $p = "`$p_${_}"
-                    $pre += "${p} = ConvertFrom-Yaml @""`n" 
-                    $pre += ConvertTo-Yaml $val
-                    $pre += """@`n"
-                    $val = $p
+                elseif ( $val.GetType().BaseType.Name -ne 'ValueType' ) {
+                    $val, $p = to_yaml_param $_ $val
+                    $pre += $p
                 }
 
                 $res += ' -{0} {1}' -f (titlecase $_), $val
             } 
+        }
+        if ($data -is [string]) { $res = "'$data'" }
+        if ($data.GetType().Name -eq 'List`1') {
+            for($i = 0; $i -lt $data.Count; $i++){
+                $val = $data[ $i ]
+                if ($val -is [string]) { $val = Expand-PoshString $val }
+                else {
+                    $val, $p = to_yaml_param $i $val
+                    $pre += $p
+                }
+                $res += $val
+            }
+
         }
     }
     if ($opts.Contains('f')) { $res += ' -Force' }

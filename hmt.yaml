@@ -39,7 +39,7 @@ windows config:
     - show file extensions
     - show full path in title bar
 
-  language list |f:
+  language list |@:
     - [en-uk, sr-lat, sr-cyr]
 
   culture: sr-Latn-RS
