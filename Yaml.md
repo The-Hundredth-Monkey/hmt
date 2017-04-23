@@ -42,7 +42,7 @@ There is one special key - `args` - that can be used to mix named and non-named 
     computer name:
         args: my-computer
         force: true
-        protocol: WSMan
+        protocol : $WSMan
 ```
 which is translated to `Rename-Computer "my-computer" -Force:$true -Protocol:'WSMan'`.
 

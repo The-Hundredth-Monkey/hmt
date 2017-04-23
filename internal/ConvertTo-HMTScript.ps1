@@ -43,7 +43,7 @@ function Get-CommandCode($CmdName, $CmdData) {
 
     $res = ''
     if ($cmd_opts.Contains('s')) {
-        $data | % { $res += ' -' + (titlecase $_).Replace(' ','') }
+        $CmdData | % { $res += ' -' + (titlecase $_).Replace(' ','') }
     } 
 }
 

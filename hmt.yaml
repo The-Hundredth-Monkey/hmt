@@ -57,7 +57,7 @@ windows config:
      enable: 1     
   
   computer name (f: 
-      $ name: |
+      $name: |
         $systeminfo = gwmi Win32_ComputerSystem
         $manufacturer = $systeminfo.Manufacturer -split ' ' | select -first 1
         $year = (get-date).ToString('yy')
