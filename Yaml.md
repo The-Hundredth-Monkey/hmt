@@ -34,6 +34,8 @@ it will be mapped to the same command according to parameter ordering:
     Update-Proxy "myserver.com" 1 "meh.com"
 ```
 
+Yaml-Command is searched with `Get-Command` function and if nothing found, spaces will be replaced with `-` and it will be tried again (so `Update-Proxy` could be represented in yaml with `update proxy` too).
+
 There is one special key - `args` - that can be used to mix named and non-named parameters:
 
 ```yaml
@@ -47,8 +49,8 @@ which is translated to `Rename-Computer "my-computer" -Force:$true -Protocol:'WS
 There are few options that can change this behavior to something more appropriate in specific contexts. One of such options is `s` that turns array into list of switches:
 
 ```yaml
-  explorer options (s:
-    - show hidden files
+  explorer options (s:          # With (s, array will be joined and capitalized
+    - show hidden files        
     - show protected OS files
     - show file extensions
 ```
@@ -87,7 +89,7 @@ windows config:                            # Starting stage "windows config"
     - show hidden files
     - show protected OS files
     - show file extensions
-  proxy:                                   # Translates to Update-Proxy -Server proxysrv.com -Enalbe 1
+  proxy:                                   # Translates to Update-Proxy -Server proxysrv.com -Enable 1
      server: proxysrv.com
      enable: 1
   computer name: my-computer               # Rename-Computer "my-computer"
@@ -97,3 +99,5 @@ windows config:                            # Starting stage "windows config"
   time zone: Central Europe Standard Time  # Set-TimeZone "Central Europe Standard Time"
   culture: de-DE                           # Set-Culture "de-DE"
 ```
+
+Yaml values can also contain variables in the same format as Powershell string.
