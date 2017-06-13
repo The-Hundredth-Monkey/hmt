@@ -39,8 +39,8 @@ windows config:
     - show file extensions
     - show full path in title bar
 
-  language list:
-    - [en-uk, sr-lat, sr-cyr]
+  language list (f:
+    - [en-us, sr-Latn-RS, sr-Cyrl-RS]
 
   culture: sr-Latn-RS
   
